@@ -1,7 +1,7 @@
-//functions and utils 
+//functions and utils
 class Utils {
     constructor(...args) {
-        
+        //empty
     }
     sigmoid(x, derivative) {
         let fx = 1 / (1 + Math.exp(-x));    //Regular sigmoid function
