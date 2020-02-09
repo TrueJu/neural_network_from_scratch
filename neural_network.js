@@ -138,7 +138,6 @@ class Neural_Network {
             let output_delta = utils.dotmultiply(output_error, output_layer);
             let hidden_error = utils.multiply(output_delta, utils.transpose(this.synapse1));
             let hidden_delta = utils.dotmultiply(hidden_error, utils.dotmap(hidden_layer, "sig", true));
-            //bis hier allet ok
 
             //gradient descent
             this.synapse1 = utils.add(this.synapse1, utils.multiply(utils.transpose(hidden_layer), utils.multiply(output_delta, utils.matrix_from_num(this.lr, 4, 1))));
