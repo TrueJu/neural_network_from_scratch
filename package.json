@@ -1,0 +1,28 @@
+{
+  "name": "neural_network_from_scratch",
+  "version": "1.0.0",
+  "description": "No libraries are used, everything is made from scratch",
+  "main": "neural_network.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TrueJu/neural_network_from_scratch.git"
+  },
+  "keywords": [
+    "Neural",
+    "Network",
+    "from",
+    "scratch"
+  ],
+  "author": "Julien Widmer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TrueJu/neural_network_from_scratch/issues"
+  },
+  "homepage": "https://github.com/TrueJu/neural_network_from_scratch#readme",
+  "dependencies": {
+    "nodeplotlib": "^0.6.5"
+  }
+}

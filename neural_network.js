@@ -1,3 +1,18 @@
+//Imports
+const plotlip = require('nodeplotlib');
+
+//Show graph
+plot_x = [];
+plot_y = [];
+
+plot_count = 0;
+
+var plot_data = [{
+  x: plot_x,
+  y: plot_y,
+  type: 'scatter'
+}];
+
 //functions and utils
 class Utils {
     constructor(...args) {
@@ -66,7 +81,7 @@ class Utils {
         for(var i=0;i<arr1.length;i++) {
             result[i] = [];
             for(var j=0;j<arr1[0].length;j++) {
-                result[i][j] = arr1[i][j] * arr2[i][j];       //Multiplies the given arrays element wise
+                result[i][j] = arr1[i][j] * arr2[i][j];        //Multiplies the given arrays element wise
             }                                                  //(one on one) => Can only be applied to arrays
         }                                                      //with the same size.
         return result;
@@ -76,7 +91,7 @@ class Utils {
         for(var i=0;i<arr1.length;i++) {
             result[i] = [];
             for(var j=0;j<arr1[0].length;j++) {
-                result[i][j] = arr1[i][j] - arr2[i][j];       //Subtracts the given arrays element wise
+                result[i][j] = arr1[i][j] - arr2[i][j];        //Subtracts the given arrays element wise
             }                                                  //(one on one) => Can only be applied to arrays
         }                                                      //with the same size.
         return result;
@@ -86,7 +101,7 @@ class Utils {
         for(var i=0;i<arr1.length;i++) {
             result[i] = [];
             for(var j=0;j<arr1[0].length;j++) {
-                result[i][j] = arr1[i][j] + arr2[i][j];       //Adds the given arrays element wise
+                result[i][j] = arr1[i][j] + arr2[i][j];        //Adds the given arrays element wise
             }                                                  //(one on one) => Can only be applied to arrays
         }                                                      //with the same size.
         return result;
@@ -116,7 +131,7 @@ class Neural_Network {
         this.hidden_nodes = args[1];
         this.output_nodes = args[2];
 
-        this.epochs = 500000;
+        this.epochs = 1000000;
         this.lr = .5;
         this.output = 0;
 
@@ -144,8 +159,14 @@ class Neural_Network {
             this.synapse0 = utils.add(this.synapse0, utils.multiply(utils.transpose(input_layer), utils.dotmultiply(hidden_delta, utils.matrix_from_num(this.lr, 4, 4))));
             this.output = output_layer;            
 
-            if(i % 10000 == 0) {
+            if(i % 100000 == 0) {
                 console.log(`Error: ${utils.mean(utils.abs(output_error))}`);
+            }
+            if(i % 75000 == 0) {
+                plot_count += 1;
+
+                plot_x.push(plot_count)
+                plot_y.push(utils.mean(utils.abs(output_error)));
             }
             if(i == this.epochs-1) {
                 console.log(`\nThe final error is: ${utils.mean(utils.abs(output_error))}`);
@@ -153,6 +174,18 @@ class Neural_Network {
                 console.log(this.synapse0);
                 console.log('\nFinal weights: Synapse1');
                 console.log(this.synapse1);
+
+                plot_count += 1;
+
+                plot_x.push(plot_count);
+                plot_y.push(utils.mean(utils.abs(output_error)));
+
+                plot_x = plot_x.shift();        // Removes first error for compensation
+                plot_y = plot_y.shift();        // Removes first error for compensation
+
+                // The plotlib rounds the errors - therefore they are not 100% exact but good enough
+                // for showing the learning curve
+                plotlip.plot(plot_data);        // Creates a graph and opens it in the browser
             }
         }
     }
@@ -166,15 +199,19 @@ class Neural_Network {
         return output_layer;
     }
 }
-const input = [[0, 0], 
-               [0, 1],
-               [1, 0],
-               [1, 1]];
+const input = [
+[0, 0], 
+[0, 1],
+[1, 0],
+[1, 1]
+];
 
-const target = [[0], 
-                [1], 
-                [1], 
-                [0]];
+const target = [
+[0], 
+[1], 
+[1], 
+[0]
+];
 
 const Network = new Neural_Network(2, 4, 1);
 Network.train(input, target);
